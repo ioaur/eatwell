@@ -1,14 +1,19 @@
 import z from "zod";
-import { publicProcedure, router } from "./app";
+import { baseProcedure, router } from "./config";
 
 const greetingsRouter = router({
-    greeting: publicProcedure
+    greet: baseProcedure
         .input(
             z
                 .object({
                     name: z.string().nullish(),
                 })
                 .nullish()
+        )
+        .output(
+            z.object({
+                text: z.string(),
+            })
         )
         .query(({ input }) => {
             return {

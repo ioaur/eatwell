@@ -1,15 +1,20 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import cors from "cors";
-import appRouter from "./routes/app";
+import { router } from "./router/config";
+import greetingsRouter from "./router/greetings";
 
-const createContext = () => ({});
+const appRouter = router({
+    greetings: greetingsRouter,
+});
 
-createHTTPServer({
+const httpServer = createHTTPServer({
     middleware: cors(),
     router: appRouter,
-    createContext,
 }).listen(5000);
+
+console.log(`Server running on port ${httpServer.port}`);
 
 // export only the type definition of the API
 // None of the actual implementation is exposed to the client
 export type AppRouter = typeof appRouter;
+export default appRouter;
